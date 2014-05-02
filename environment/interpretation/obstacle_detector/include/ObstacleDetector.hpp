@@ -13,18 +13,19 @@
 #include <sensor_msgs/image_encodings.h>
 #include "sensor_msgs/LaserScan.h"
 
-#define DEBUG 1
 
-#define CENTERX 500
-#define CENTERY 100
-#define HOKUYO_SCALE 100
-#define RADIUS 30
-#define EXPAND_ITER 60
+// SCALING  : 100 in cm.
 
+static const int CENTERX =500;
+static const int CENTERY =100;
+static const int HOKUYO_SCALE= 100;
+// static const int RADIUS =30;
+static const int EXPAND_OBS =30;
+static const int LIDAR_Y_SHIFT=30;
 
-#define MAP_MAX 1000
-#define LOOP_RATE 10
-#define WAIT_TIME 100
+static const int MAP_MAX =1000;
+static const int LOOP_RATE =10;
+static const int WAIT_TIME =100;
 
 
 class ObstacleDetector : public environment::Interpreter {
@@ -33,6 +34,7 @@ public:
     ObstacleDetector(int argc, char *argv[],ros::NodeHandle &nh);
     virtual ~ObstacleDetector();
 private:
+	int debug;
 	cv::Mat img;
 	void publishData();
 	void scanCallback(const sensor_msgs::LaserScan& scan);
@@ -42,6 +44,8 @@ private:
 	ros::Subscriber sub;
     image_transport::ImageTransport *it;
     image_transport::Publisher pub;
+    int max_dist;
+    int min_dist;
 };
 
 #endif	/* OBSTACLEDETECTOR_HPP */

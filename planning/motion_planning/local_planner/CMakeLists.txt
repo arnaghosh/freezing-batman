@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.4.6)
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
-
+include(${PROJECT_SOURCE_DIR}/include)
+#add_definitions(-std=c++0x)
 # Set the build type.  Options are:
 #  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
 #  Debug          : w/ debug symbols, w/o optimization
@@ -18,7 +19,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 set(AGV_FRAMEWORK libagv_framework.so)
 
 #uncomment if you have defined messages
-#rosbuild_genmsg()
+rosbuild_genmsg()
 #uncomment if you have defined services
 #rosbuild_gensrv()
 
@@ -26,23 +27,10 @@ set(AGV_FRAMEWORK libagv_framework.so)
 #rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
 #target_link_libraries(${PROJECT_NAME} another_library)
 #rosbuild_add_boost_directories()
-rosbuild_add_boost_directories()
-#rosbuild_add_executable(example examples/example.cpp)
-rosbuild_add_executable(${PROJECT_NAME} 
-  src/LocalPlanner.cpp
-  src/road_navigation/RoadNavigation.cpp
-  src/road_navigation/Clothoid.cpp 
-  src/road_navigation/Fresnel.cpp 
-  src/road_navigation/Posture.cpp
-  src/road_navigation/Trajectory.cpp 
-  )
-rosbuild_add_executable(${PROJECT_NAME}_unit_tester src/UnitTester.cpp)
-rosbuild_add_executable(${PROJECT_NAME}_debugger src/Debugger.cpp)
 #rosbuild_link_boost(${PROJECT_NAME} thread)
-rosbuild_link_boost(${PROJECT_NAME} 
-  thread 
-  system 
-  signals
-  )
-#target_link_libraries(example ${PROJECT_NAME})
+#rosbuild_add_executable(example examples/example.cpp)
+rosbuild_add_executable(${PROJECT_NAME} src/main.cpp src/local_planner.cpp src/a_star_seed/a_star_seed.cpp src/a_star_seed/state.cpp src/a_star_seed/state_of_car.cpp src/a_star_seed/seed.cpp src/a_star_seed/ss_priority_queue.cpp)
+
 target_link_libraries(${PROJECT_NAME} ${AGV_FRAMEWORK})
+
+#target_link_libraries(example ${PROJECT_NAME})
